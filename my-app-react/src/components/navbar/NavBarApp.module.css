@@ -1,0 +1,30 @@
+.container {
+  grid-column-start: 0;
+  grid-column-end: span 3;
+  display: grid;
+  grid-template-columns: minmax(5px, 30vh) 1fr minmax(5px, 30vh);
+}
+
+.titulo {
+  grid-column-start: 1;
+  align-self: center;
+  justify-self: end;
+  font-size: 20px;
+}
+
+.nav {
+  align-self: center;
+  justify-self: end;
+}
+
+.nav ul {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.active,
+.link:hover {
+  --tw-text-opacity: 1;
+  color: white;
+}

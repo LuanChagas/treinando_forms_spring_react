@@ -1,0 +1,43 @@
+.container {
+  grid-row-start: 2;
+  grid-column-start: 2;
+}
+
+.containerTabela {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+}
+
+.btnadd {
+  justify-self: end;
+}
+table {
+  scrollbar-gutter: stable both-edges;
+}
+table tbody {
+  display: block;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+table thead,
+table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tabelaTitulo {
+  text-align: center;
+}
+
+.acao {
+  margin: 0 auto;
+}
+
+.tabeladados {
+  text-align: center;
+  background-color: white;
+  height: 50px;
+  font-size: 1rem;
+}

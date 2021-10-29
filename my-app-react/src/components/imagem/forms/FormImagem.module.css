@@ -1,0 +1,86 @@
+.container {
+  grid-row-start: 2;
+  grid-column-start: 2;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.card {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+}
+
+.btnvoltar {
+  justify-self: end;
+}
+
+form {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
+fieldset {
+  align-self: center;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  margin-left: 20px;
+}
+
+.formProduto {
+  grid-column-start: 2;
+}
+
+.formDescricao,
+.formImagens,
+.formBtn {
+  grid-column-start: 1;
+  grid-column-end: span 3;
+}
+
+fieldset label {
+  justify-self: start;
+  font-size: 1rem;
+}
+
+.formNome input,
+.formDescricao input {
+  width: 100%;
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+  border: 1px solid rgba(209, 213, 219, 1);
+  color: #212529;
+  padding-left: 5px;
+}
+
+.formProduto select {
+  width: 50%;
+  background-color: rgba(229, 231, 235);
+  border: 1px solid rgba(209, 213, 219, 1);
+  color: #212529;
+  padding-left: 5px;
+  overflow: auto;
+}
+
+input {
+  margin-top: 2px;
+  margin-right: 20px;
+}
+
+input[type="text"]:focus {
+  box-shadow: none;
+  border: 2px solid #212529;
+}
+
+.formBtn {
+  justify-self: center;
+  align-self: center;
+}
+.formBtn button {
+  grid-row-start: 1;
+  grid-row-end: span 2;
+  padding: 10px;
+  font-weight: 700;
+}

@@ -1,0 +1,12 @@
+body {
+  font-weight: 600;
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
+
+.container {
+  display: grid;
+  grid-template-columns: minmax(5px, 30vh) 1fr minmax(5px, 30vh);
+  grid-template-rows: 100px 1fr minmax(10px, 25px);
+  row-gap: 10px;
+}

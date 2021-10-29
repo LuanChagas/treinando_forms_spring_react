@@ -1,0 +1,6 @@
+.container {
+  text-align: center;
+  box-sizing: border-box;
+  grid-row-start: 3;
+  grid-column-start: 2;
+}

@@ -1,0 +1,42 @@
+.container {
+  grid-row-start: 2;
+  grid-column-start: 2;
+}
+
+.btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 30px;
+}
+
+.btnCrud {
+  justify-self: start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 30px;
+  gap: 10px;
+}
+
+.btnVoltar {
+  justify-self: end;
+}
+
+.tabelaTitulo {
+  text-align: center;
+}
+
+.acao {
+  margin: 0 auto;
+}
+
+.tabeladados {
+  text-align: center;
+  background-color: white;
+  height: 50px;
+  font-size: 1rem;
+}
+
+.imagem {
+  max-width: 600px;
+  margin: 0 auto;
+}
