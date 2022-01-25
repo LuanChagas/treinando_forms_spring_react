@@ -3,7 +3,7 @@ import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
 import NavBarApp from "./components/navbar/NavBarApp";
 import Footer from "./components/footer/Footer";
 import FormProduto from "./components/produto/forms/FormProduto";
-import TabelaProduto from "./components/produto/tabela/TabelaProduto";
+import ListaProduto from "./components/produto/lista/ListaProduto";
 import Produto from "./components/produto/Produto";
 import ListaImagens from "./components/imagem/lista/ListaImagens";
 import FormImagem from "./components/imagem/forms/FormImagem";
@@ -20,7 +20,7 @@ function App() {
         <NavBarApp></NavBarApp>
         <Switch>
           <Route exact path="/">
-            <TabelaProduto />
+            <ListaProduto />
           </Route>
           <Route exact path="/produto/cadastrar">
             <FormProduto />
@@ -37,10 +37,10 @@ function App() {
           <Route exact path="/imagens">
             <ListaImagens />
           </Route>
-          <Route exact path="/produto">
+          <Route exact path="/produto/:id">
             <Produto />
           </Route>
-          <Route exact path="/imagem">
+          <Route exact path="/imagem/:id">
             <Imagem />
           </Route>
         </Switch>

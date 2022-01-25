@@ -1,7 +1,8 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import styles from "../imagem/Imagem.module.css";
-import { Link } from "react-router-dom";
-import img from "../../images/Descrição-de-produto-no-e-commerce-1024x538.png";
+import { Link, NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios"
 
 let dadosEditar = {
   nome: "Nome da foto",
@@ -10,26 +11,59 @@ let dadosEditar = {
 };
 
 const Imagem = () => {
+  const { id } = useParams();
+  const [dadosImagem, setDadosImagem] = useState(null)
+  const [vazio, setVazio] = useState(false)
+
+  useEffect(() => {
+  getImagem(id)
+  }, [])
+
+  function getImagem(){
+    axios.get(`http://localhost:8080/api/imagem/${id}`)
+    .then(function (response) {
+      setDadosImagem(response.data)
+      console.log(dadosImagem)
+    }).catch(function (error) {
+      console.log(error);
+    })
+  }
+
+  function deleteImagemById(id) {
+    axios.delete(`http://localhost:8080/api/imagem/${id}`)
+    setVazio(!vazio)
+  }
+
+  if (!dadosImagem || vazio) return <>
+    <Link
+      to="/imagens"
+      exact={true}
+      className={`${styles.btnVoltar} flex items-center p-4 text-gray-900 bg-indigo-400 rounded-lg shadow-md cursor-pointer hover:bg-indigo-800 hover:text-gray-100`}
+    >
+      Voltar
+    </Link>
+  </>;
   return (
     <div className={`${styles.container}`}>
       <div className={`${styles.containerContent}`}>
         <div className={`${styles.btns}`}>
           <div className={`${styles.btnCrud}`}>
-            <Link
+            <NavLink
               to="imagem/cadastrar/1"
               className={`${styles.btnEditar} flex items-center p-4 text-gray-900 bg-green-400 rounded-lg shadow-md cursor-pointer hover:bg-green-800 hover:text-gray-100`}
             >
               Editar
-            </Link>
-            <Link
-              to=""
+            </NavLink>
+            <button
+              onClick={() => { deleteImagemById(dadosImagem.id) }}
               className={`${styles.btnExcluir} flex items-center p-4 text-gray-900 bg-red-400 rounded-lg shadow-md cursor-pointer hover:bg-red-800 hover:text-gray-100`}
             >
               Excluir
-            </Link>
+            </button>
           </div>
           <Link
-            to=""
+            to="/imagens"
+            exact={true}
             className={`${styles.btnVoltar} flex items-center p-4 text-gray-900 bg-indigo-400 rounded-lg shadow-md cursor-pointer hover:bg-indigo-800 hover:text-gray-100`}
           >
             Voltar
@@ -55,17 +89,18 @@ const Imagem = () => {
                 <tr
                   className={` ${styles.tabeladados} border-b text-gray-600 text-sm font-light `}
                 >
+
                   <td>
-                    <a href="#">1</a>
+                    {dadosImagem.id}
                   </td>
-                  <td>Nome da foto</td>
-                  <td>(1234) Produto</td>
-                  <td>Foto de um produto</td>
+                  <td>{dadosImagem.nome}</td>
+                  <td>({dadosImagem.produto.id}) {dadosImagem.produto.nome}</td>
+                  <td>{dadosImagem.descricao}</td>
                 </tr>
               </tbody>
             </table>
             <div className={`${styles.imagem}  shadow-md`}>
-              <img src={img} />
+              <img src={dadosImagem.caminho} />
             </div>
           </div>
         </div>

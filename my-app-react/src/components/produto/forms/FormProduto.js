@@ -1,23 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./FormProduto.module.css";
 import { NavLink, useParams } from "react-router-dom";
+import axios from "axios";
 
-let dadosEditar = {
-  nome: "celular",
-  preco: "1500.00",
-  descricao: "Um produto de Ponta",
-  estoque: "true",
+let dadosInicial = {
+  nome: "",
+  preco: "",
+  descricao: "",
+  estoque: "",
 };
 
 const FormProduto = () => {
+
   const { id } = useParams();
+  const [dados, setDados] = useState(dadosInicial);
+
   if (!id) {
-    dadosEditar = {};
+    dadosInicial = {};
   }
-  console.log(dadosEditar);
+
+  function mudarDados(e, setDados, dados) {
+
+    if (e.target.name === "produto") {
+      let produto = {
+        "id": e.target.value
+      }
+      setDados({
+        ...dados, [e.target.name]: produto
+      })
+    } else {
+      setDados({
+        ...dados, [e.target.name]: e.target.value
+      })
+    }
+    console.log(dados)
+  }
+
+
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(event);
+    axios.post(`http://localhost:8080/api/produto`, {
+      ...dados
+    }).then(function (response) {
+    })
+      .catch(function (error) {
+        console.log(error);
+      });
+
   }
   return (
     <div className={styles.container}>
@@ -34,15 +64,16 @@ const FormProduto = () => {
         >
           <fieldset className={styles.formNome}>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" value={dadosEditar.nome} />
+            <input type="text" id="nome" name="nome" value={dadosInicial.nome} onChange={mudarDados} />
           </fieldset>
           <fieldset className={styles.formPreco}>
-            <label for="nome">Preço:</label>
+            <label for="preco">Preço:</label>
             <input
               type="text"
-              id="nome"
-              name="nome"
-              value={dadosEditar.preco}
+              id="preco"
+              name="preco"
+              value={dadosInicial.preco}
+              onChange={mudarDados}
             />
           </fieldset>
           <fieldset className={styles.formDescricao}>
@@ -51,7 +82,8 @@ const FormProduto = () => {
               type="text"
               id="descricao"
               name="descricao"
-              value={dadosEditar.descricao}
+              value={dadosInicial.descricao}
+              onChange={mudarDados}
             />
           </fieldset>
           <fieldset className={styles.formEstoque}>
@@ -62,9 +94,10 @@ const FormProduto = () => {
               <input
                 type="radio"
                 id="sim"
-                name="estoqueradio"
+                name="estoque"
                 value="true"
-                checked={dadosEditar.estoque === "true" ? true : false}
+                onChange={mudarDados}
+
               />
             </div>
             <div>
@@ -72,16 +105,14 @@ const FormProduto = () => {
               <input
                 type="radio"
                 id="nao"
-                name="estoqueradio"
+                name="estoque"
                 value="false"
-                checked={!dadosEditar.estoque === "true" ? true : false}
+                onChange={mudarDados}
+
               />
             </div>
           </fieldset>
-          <fieldset className={styles.formImagens}>
-            <label for="">Escolha algumas imagens para o produto</label>
-            <input type="file" id="imagens" name="file" multiple />
-          </fieldset>
+
           <fieldset className={`${styles.formBtn}`}>
             <button
               type="submit"

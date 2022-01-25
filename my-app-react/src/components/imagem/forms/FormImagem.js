@@ -1,48 +1,138 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../forms/FormImagem.module.css";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
+import storage from "../../../Utils/FirebaseConfig";
+import { getDownloadURL } from "firebase/storage"
 
-let dadosEditar = {
-  nome: "Nome da foto",
-  produto: "produto1",
-  descricao: "Foto de um produto",
+
+let dadosImagem = {
+  "nome": "",
+  "descricao": "",
+  "caminho": "",
+  "produto": {
+    "id": ""
+  }
 };
 
+
 const Imagem = () => {
-  const { id } = useParams();
-  if (!id) {
-    dadosEditar = {};
+  const [dados, setDados] = useState(dadosImagem);
+  const [dadosProduto, setDadosProduto] = useState("")
+
+  useEffect(() => {
+    axios.get(`http://localhost:8080/api/produto`)
+      .then(function (response) {
+        setDadosProduto(response.data)
+      }).catch(function (error) {
+        console.log(error);
+      })
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  function mudarDados(e) {
+
+    if (e.target.name === "produto") {
+      let produto = {
+        "id": e.target.value
+      }
+      setDados({
+        ...dados, [e.target.name]: produto
+      })
+    } else {
+      setDados({
+        ...dados, [e.target.name]: e.target.value
+      })
+    }
+    console.log(dados)
   }
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log(event.target.foto.value);
+
+  function enviarParaStorage(file, e) {
+
+    let ext = file.name.split(".")
+    let nomeArquivo = `twate.${ext[1]}`;
+    let storageRef = storage.ref(`images/${nomeArquivo.split(" ").join("")}`)
+    let uploadTask = storageRef.put(file);
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+        }
+      },
+      (error) => {
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+          e.target.file.value = ""
+          enviarParaOBD(downloadURL)
+        });
+      }
+    );
+  };
+
+  function enviarParaOBD(url) {
+    axios.post(`http://localhost:8080/api/imagem`, {
+      ...dados,
+      caminho: url
+      /*  nome: dados.nome,
+        descricao: dados.descricao,
+        caminho: url,
+        produto: {
+          id: dados.produto.id
+        } */
+    }).then(function (response) {
+    })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
+
+  function tratarImagem(imagem, e) {
+    enviarParaStorage(imagem, e)
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    tratarImagem(e.target.file.files[0], e)
+    setDados(dadosImagem)
+  }
+
+  if (!dadosProduto) return null;
+
   return (
     <div className={styles.container}>
       <div className={styles.card}>
         <NavLink
-          to="/"
+          to="/imagens"
+
           className={`${styles.btnvoltar} flex items-center p-4 text-gray-900 bg-indigo-400 rounded-lg shadow-md cursor-pointer hover:bg-indigo-800 hover:text-gray-100`}
         >
           Voltar
         </NavLink>
-        <form className="border-b text-gray-600 shadow-xl text-sm bg-gray-50">
+        <form className="border-b text-gray-600 shadow-xl text-sm bg-gray-50" onSubmit={handleSubmit}>
           <fieldset className={styles.formNome}>
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" value={dadosEditar.nome} />
+            <input type="text" id="nome" name="nome" value={dados.nome} onChange={mudarDados} />
           </fieldset>
           <fieldset className={styles.formProduto}>
             <label for="produto">Produto:</label>
-            <select name="produto" id="produto" value={dadosEditar.produto}>
+            <select name="produto" id="produto" value={dados.produto.id} onChange={mudarDados}>
               <option value="" select>
                 Escolha um produto
               </option>
-              <option value="produto1">(1234) produto 1</option>
-              <option value="produto2">(1234) produto 2</option>
-              <option value="produto3">(1234) produto 3</option>
-              <option value="produto4">(1234) produto 4</option>
-              <option value="produto5">(1234) produto 5</option>
-              <option value="produto6">(1234) produto 6</option>
+              {
+                dadosProduto.map(r => (
+                  <option name="produto" id="produto" value={r.id}>({r.id}) {r.nome}</option>
+                ))}
             </select>
           </fieldset>
           <fieldset className={styles.formDescricao}>
@@ -51,16 +141,16 @@ const Imagem = () => {
               type="text"
               id="descricao"
               name="descricao"
-              value={dadosEditar.descricao}
+              value={dados.descricao}
+              onChange={mudarDados}
             />
           </fieldset>
           <fieldset className={styles.formImagens}>
-            <label for="">Escolha algumas imagens para o produto</label>
-            <input type="file" id="files" name="files"></input>
+            <label for="">Escolha alguma imagem para o produto</label>
+            <input type="file" id="file" name="file" ></input>
           </fieldset>
           <fieldset className={`${styles.formBtn}`}>
             <button
-              type="submit"
               className="text-gray-900 bg-indigo-400 rounded-lg shadow-md cursor-pointer hover:bg-indigo-800 hover:text-gray-100"
             >
               <h1>Cadastrar</h1>
@@ -71,5 +161,6 @@ const Imagem = () => {
     </div>
   );
 };
+
 
 export default Imagem;

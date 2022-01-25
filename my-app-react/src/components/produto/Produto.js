@@ -1,9 +1,23 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
+import { Link, useParams,NavLink } from "react-router-dom";
 import styles from "./Produto.module.css";
-import { NavLink, Link, useParams } from "react-router-dom";
-import img from "../../images/Descrição-de-produto-no-e-commerce-1024x538.png";
+import axios from "axios";
 
 const Produto = () => {
+  const { id } = useParams();
+  const [dadosProduto, setDadosProduto] = useState(null);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8080/api/produto/${id}`)
+      .then(function (response) {
+        setDadosProduto(response.data)
+        console.log(dadosProduto)
+      }).catch(function (error) {
+        console.log(error);
+      })
+  }, [])
+
+  if (!dadosProduto) return null;
   return (
     <div className={`${styles.container}`}>
       <div className={`${styles.containerContent}`}>
@@ -50,60 +64,28 @@ const Produto = () => {
                 <tr
                   className={` ${styles.tabeladados} border-b text-gray-600 text-sm font-light `}
                 >
+
                   <td>
-                    <a href="#">1</a>
+                    <a href="#">{dadosProduto.id}</a>
                   </td>
-                  <td>Celular</td>
-                  <td>R$ 1500.00</td>
-                  <td>Um produto de ponta</td>
-                  <td>sim</td>
+                  <td>{dadosProduto.nome}</td>
+                  <td>{dadosProduto.preco}</td>
+                  <td>{dadosProduto.descricao}</td>
+                  <td>{dadosProduto.estoque ? "Sim" : "Não"}</td>
                 </tr>
               </tbody>
             </table>
             <div className={`${styles.imagens} `}>
               <ul>
-                <li className={` shadow-lg`}>
-                  <Link to="imagens">
-                    <div>
-                      <img src={img} />
-                    </div>
-                  </Link>
-                </li>
-                <li className={` shadow-lg`}>
-                  <Link to="imagens">
-                    <div>
-                      <img src={img} />
-                    </div>
-                  </Link>
-                </li>
-                <li className={` shadow-lg`}>
-                  <Link to="imagens">
-                    <div>
-                      <img src={img} />
-                    </div>
-                  </Link>
-                </li>
-                <li className={` shadow-lg`}>
-                  <Link to="imagens">
-                    <div>
-                      <img src={img} />
-                    </div>
-                  </Link>
-                </li>
-                <li className={` shadow-md`}>
-                  <Link to="imagens">
-                    <div>
-                      <img src={img} />
-                    </div>
-                  </Link>
-                </li>
-                <li className={` shadow-md`}>
-                  <Link to="imagens">
-                    <div>
-                      <img src={img} />
-                    </div>
-                  </Link>
-                </li>
+                {dadosProduto.imagens.map(r => (
+                  <li className={` shadow-lg`}>
+                    <NavLink exact to={`/imagem/${r.id}`}>
+                      <div>
+                        <img src={r.caminho} />
+                      </div>
+                    </NavLink>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

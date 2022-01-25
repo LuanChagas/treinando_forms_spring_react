@@ -11,6 +11,12 @@
 .btnadd {
   justify-self: end;
 }
+
+.tituloNull {
+  justify-self: center;
+  margin-bottom: 200px;
+  margin-top: 50px;
+}
 table {
   scrollbar-gutter: stable both-edges;
 }
