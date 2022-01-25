@@ -1,4 +1,4 @@
-# Welcome to StackEdit!
+
 
 # Treinando forms com Spring React
 
@@ -51,7 +51,7 @@ Eu posso estar falando muita besteira sobre o paragrafo acima:smile::smile:. Bem
 ## Um pouco de tudo [![](https://img.shields.io/badge/-Tudo--mais--um--pouco-green)](https://github.com/LuanChagas/treinando_forms_spring_react/commit/ca0f2b2ab9a2761ae006dc3c28d998ed6780911e)
 **Firebase**
 
-Como tinha dito, configurei e adicionei a função de adicionar a imagem no Firebase Storage. Confesso que não foi muito difícil, porém na parte onde eu obtenho a url ficou meio **sei lá** :man_shrugging: . Fiz como imaginava: usando o hooks useState para 'setar' o valor, mas não funcionava nem a pau. Acabei jogando diretamente no axios e funcionou.
+Como tinha dito, configurei e adicionei a função de adicionar a imagem no Firebase Storage. Confesso que não foi muito difícil, porém na parte onde eu obtenho a url ficou meio **sei lá** :man_shrugging: . Fiz como imaginava: usando o hooks useState para 'setar' o valor, mas não funcionava nem a pau. Acabei jogando diretamente no axios e funcionou. Fica faltando apenas e delete direto no storage.
 
 **Crud**
 
