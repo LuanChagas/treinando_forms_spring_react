@@ -1,17 +1,9 @@
 package com.luan.app.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.luan.app.DTOs.ImagemDTO;
-import com.luan.app.Utils.DTOparaEntidades;
-import com.luan.app.entidades.Imagem;
-import com.luan.app.entidades.Produto;
-import com.luan.app.repositorios.ProdutoRepositorio;
 import com.luan.app.services.ImagemServices;
-import com.luan.app.services.ProdutoServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

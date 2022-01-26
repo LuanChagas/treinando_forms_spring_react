@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { Link, useParams,NavLink } from "react-router-dom";
+import { Link, useParams, NavLink } from "react-router-dom";
 import styles from "./Produto.module.css";
 import axios from "axios";
 

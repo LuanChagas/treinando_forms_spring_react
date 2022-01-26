@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "../forms/FormImagem.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import storage from "../../../Utils/FirebaseConfig";
 import { getDownloadURL } from "firebase/storage"
@@ -15,20 +15,30 @@ let dadosImagem = {
   }
 };
 
-
 const Imagem = () => {
+  const { id } = useParams();
   const [dados, setDados] = useState(dadosImagem);
   const [dadosProduto, setDadosProduto] = useState("")
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/produto`)
+    if (id) {
+      axios.get(`http://localhost:8080/api/imagem/${id}`)
+        .then(function (response) {
+          setDados(response.data)
+        }).catch(function (error) {
+          console.log(error);
+        })
+    }
+
+    axios.get(`http://localhost:8080/api/produto/id_nome`)
       .then(function (response) {
         setDadosProduto(response.data)
       }).catch(function (error) {
         console.log(error);
       })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function mudarDados(e) {
@@ -80,6 +90,9 @@ const Imagem = () => {
   };
 
   function enviarParaOBD(url) {
+    if (id) {
+      axios.put(`http://localhost:8080/api/imagem/`, { ...dados, caminho: url })
+    }
     axios.post(`http://localhost:8080/api/imagem`, {
       ...dados,
       caminho: url
@@ -96,13 +109,19 @@ const Imagem = () => {
       });
   }
 
-  function tratarImagem(imagem, e) {
-    enviarParaStorage(imagem, e)
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
-    tratarImagem(e.target.file.files[0], e)
+    if (id) {
+      if (e.target.file.files[0]) {
+        enviarParaStorage(e.target.file.files[0], e)
+      } else {
+        axios.put(`http://localhost:8080/api/imagem/`, dados)
+      }
+
+    } else {
+      enviarParaStorage(e.target.file.files[0], e)
+    }
+
     setDados(dadosImagem)
   }
 
@@ -146,7 +165,12 @@ const Imagem = () => {
             />
           </fieldset>
           <fieldset className={styles.formImagens}>
-            <label for="">Escolha alguma imagem para o produto</label>
+            {
+              id ?
+                <label for="">Clique caso queira cadastrar uma nova imagem</label>
+                :
+                <label for="">Escolha alguma imagem para o produto</label>
+            }
             <input type="file" id="file" name="file" ></input>
           </fieldset>
           <fieldset className={`${styles.formBtn}`}>

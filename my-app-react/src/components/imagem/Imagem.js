@@ -16,17 +16,17 @@ const Imagem = () => {
   const [vazio, setVazio] = useState(false)
 
   useEffect(() => {
-  getImagem(id)
+    getImagem(id)
   }, [])
 
-  function getImagem(){
+  function getImagem() {
     axios.get(`http://localhost:8080/api/imagem/${id}`)
-    .then(function (response) {
-      setDadosImagem(response.data)
-      console.log(dadosImagem)
-    }).catch(function (error) {
-      console.log(error);
-    })
+      .then(function (response) {
+        setDadosImagem(response.data)
+        console.log(dadosImagem)
+      }).catch(function (error) {
+        console.log(error);
+      })
   }
 
   function deleteImagemById(id) {
@@ -49,7 +49,7 @@ const Imagem = () => {
         <div className={`${styles.btns}`}>
           <div className={`${styles.btnCrud}`}>
             <NavLink
-              to="imagem/cadastrar/1"
+              to={`cadastrar/${id}`}
               className={`${styles.btnEditar} flex items-center p-4 text-gray-900 bg-green-400 rounded-lg shadow-md cursor-pointer hover:bg-green-800 hover:text-gray-100`}
             >
               Editar

@@ -4,7 +4,8 @@ import 'firebase/compat/storage'
 
 
 const firebaseConfig = {
- /* configuração do firebase*/
+  /* configuração do firebase*/
+
 };
 
 // eslint-disable-next-line no-unused-vars
