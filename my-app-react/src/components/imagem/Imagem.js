@@ -2,13 +2,11 @@ import { React, useEffect, useState } from "react";
 import styles from "../imagem/Imagem.module.css";
 import { Link, NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
+import storage from "../../Utils/FirebaseConfig";
+import { deleteObject } from "firebase/storage";
 
-let dadosEditar = {
-  nome: "Nome da foto",
-  produto: "(1234) Produto",
-  descricao: "Foto de um produto",
-};
+
 
 const Imagem = () => {
   const { id } = useParams();
@@ -23,15 +21,20 @@ const Imagem = () => {
     axios.get(`http://localhost:8080/api/imagem/${id}`)
       .then(function (response) {
         setDadosImagem(response.data)
-        console.log(dadosImagem)
       }).catch(function (error) {
         console.log(error);
       })
   }
 
   function deleteImagemById(id) {
-    axios.delete(`http://localhost:8080/api/imagem/${id}`)
-    setVazio(!vazio)
+
+    const desertRef = storage.ref(`images/${dadosImagem.nome.split(" ").join("")}.jpg`);
+    deleteObject(desertRef).then(() => {
+      axios.delete(`http://localhost:8080/api/imagem/${id}`)
+      setVazio(!vazio)
+    }).catch((error) => {
+      console.log(error)
+    });
   }
 
   if (!dadosImagem || vazio) return <>

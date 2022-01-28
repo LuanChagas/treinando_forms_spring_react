@@ -3,7 +3,7 @@ import styles from "../forms/FormImagem.module.css";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import storage from "../../../Utils/FirebaseConfig";
-import { getDownloadURL } from "firebase/storage"
+import { getDownloadURL, deleteObject } from "firebase/storage"
 
 
 let dadosImagem = {
@@ -19,12 +19,14 @@ const Imagem = () => {
   const { id } = useParams();
   const [dados, setDados] = useState(dadosImagem);
   const [dadosProduto, setDadosProduto] = useState("")
+  const [imagemAntiga, setImagemAntiga] = useState("")
 
   useEffect(() => {
     if (id) {
       axios.get(`http://localhost:8080/api/imagem/${id}`)
         .then(function (response) {
           setDados(response.data)
+          setImagemAntiga(response.data.nome)
         }).catch(function (error) {
           console.log(error);
         })
@@ -61,7 +63,8 @@ const Imagem = () => {
   function enviarParaStorage(file, e) {
 
     let ext = file.name.split(".")
-    let nomeArquivo = `twate.${ext[1]}`;
+    let nomeArquivo = `${dados.nome}.${ext[1]}`;
+    console.log(nomeArquivo.split(" ").join(""))
     let storageRef = storage.ref(`images/${nomeArquivo.split(" ").join("")}`)
     let uploadTask = storageRef.put(file);
 
@@ -113,7 +116,14 @@ const Imagem = () => {
     e.preventDefault();
     if (id) {
       if (e.target.file.files[0]) {
-        enviarParaStorage(e.target.file.files[0], e)
+        //criando a ref para apagar a imagem antiga do firebase em caso de um novo update de imagem
+        const desertRef = storage.ref(`images/${imagemAntiga.split(" ").join("")}.jpg`);
+        deleteObject(desertRef).then(() => {
+          enviarParaStorage(e.target.file.files[0], e)
+        }).catch((error) => {
+          console.log(error)
+        });
+
       } else {
         axios.put(`http://localhost:8080/api/imagem/`, dados)
       }

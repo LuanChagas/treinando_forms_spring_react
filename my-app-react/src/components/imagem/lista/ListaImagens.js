@@ -7,12 +7,10 @@ import axios from "axios";
 const ListaImagens = () => {
   const [dados, setDados] = useState(null);
 
-
   useEffect(() => {
     axios.get(`http://localhost:8080/api/imagem`)
       .then(function (response) {
         setDados(response.data)
-        console.log(dados)
       }).catch(function (error) {
         console.log(error);
       })

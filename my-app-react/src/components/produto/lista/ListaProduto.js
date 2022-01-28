@@ -12,7 +12,6 @@ const TabelaProduto = () => {
     axios.get(`http://localhost:8080/api/produto`)
       .then(function (response) {
         setDadosRequest(response.data)
-        console.log(dadosRequest)
       }).catch(function (error) {
         console.log(error);
       })

@@ -1,3 +1,4 @@
+
 import { React, useEffect, useState } from "react";
 import { Link, useParams, NavLink } from "react-router-dom";
 import styles from "./Produto.module.css";
@@ -11,7 +12,6 @@ const Produto = () => {
     axios.get(`http://localhost:8080/api/produto/${id}`)
       .then(function (response) {
         setDadosProduto(response.data)
-        console.log(dadosProduto)
       }).catch(function (error) {
         console.log(error);
       })
@@ -24,7 +24,7 @@ const Produto = () => {
         <div className={`${styles.btns}`}>
           <div className={`${styles.btnCrud}`}>
             <Link
-              to="produto/cadastrar/5"
+               to={`/produto/cadastrar/${dadosProduto.id}`}
               className={`${styles.btnEditar} flex items-center p-4 text-gray-900 bg-green-400 rounded-lg shadow-md cursor-pointer hover:bg-green-800 hover:text-gray-100`}
             >
               Editar
@@ -80,7 +80,7 @@ const Produto = () => {
                 {dadosProduto.imagens.map(r => (
                   <li className={` shadow-lg`}>
                     <NavLink exact to={`/imagem/${r.id}`}>
-                      <div>
+                      <div key={r.id}>
                         <img src={r.caminho} />
                       </div>
                     </NavLink>
