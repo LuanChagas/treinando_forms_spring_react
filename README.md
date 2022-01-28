@@ -57,3 +57,7 @@ Como tinha dito, configurei e adicionei a função de adicionar a imagem no Fire
 
  No Spring já criei todo o crud básico que o sistema vai usar (:thinking:). Aproveitei tirei toda a regra de negócio e passei para o Service.
 Já no React, está faltando apenas o update.
+
+**Crud(update)** [![](https://img.shields.io/badge/-Update--produtos--imagem--React-green)](https://github.com/LuanChagas/treinando_forms_spring_react/commit/27ae0adf46afbdc862e44ccc2dceaf1c251002ce)
+
+Enfim, finalizado o update no fronte end de produtos e imagens.
