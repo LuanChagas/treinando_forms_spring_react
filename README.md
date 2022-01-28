@@ -61,3 +61,7 @@ Já no React, está faltando apenas o update.
 **Crud(update)** [![](https://img.shields.io/badge/-Update--produtos--imagem--React-green)](https://github.com/LuanChagas/treinando_forms_spring_react/commit/27ae0adf46afbdc862e44ccc2dceaf1c251002ce)
 
 Enfim, finalizado o update no fronte end de produtos e imagens.
+
+**Crud(update)** [![](https://img.shields.io/badge/-deletando--imagem--Firebase-green)](https://github.com/LuanChagas/treinando_forms_spring_react/commit/27ae0adf46afbdc862e44ccc2dceaf1c251002ce)
+
+Adicionei a função de deletar uma iamgem diretamente do app. Também deletará quando for atualizar uma nova imagem para o objeto imagem.
