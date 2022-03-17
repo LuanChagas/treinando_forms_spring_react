@@ -3,58 +3,57 @@ package com.luan.app.controller;
 import java.util.List;
 
 import com.luan.app.DTOs.ImagemDTO;
-import com.luan.app.services.ImagemServices;
+import com.luan.app.services.ImagemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/imagem")
+@RequestMapping("/api/")
 public class ImagemController {
 
        @Autowired
-       private ImagemServices imagemServices;
+       private ImagemService imagemService;
 
-       @CrossOrigin
-       @PostMapping
-       public ResponseEntity<String> createImagem(@RequestBody ImagemDTO imagemDTO) {
+       @PostMapping(value = "admin/imagem")
+       public ResponseEntity<String> createImagem(@RequestBody ImagemDTO imagemDTO,
+                     @RequestHeader("Authorization") String token) {
 
-              return imagemServices.CreateImagem(imagemDTO);
+              return imagemService.CreateImagem(imagemDTO, token);
        }
 
-       @CrossOrigin
-       @GetMapping
-       public ResponseEntity<List<ImagemDTO>> obterImagens() {
+       @GetMapping(value = "user/imagens")
+       public ResponseEntity obterImagens(@RequestHeader("Authorization") String token) {
 
-              return ResponseEntity.ok(imagemServices.obterImagens());
+              return imagemService.obterImagens(token);
        }
 
-       @CrossOrigin
-       @GetMapping("/{id}")
-       public ResponseEntity<ImagemDTO> obterImagemPorId(@PathVariable("id") Long id) {
-              return imagemServices.obterImagemId(id);
+       @GetMapping("user/imagem/{id}")
+       public ResponseEntity<ImagemDTO> obterImagemPorId(@PathVariable("id") Long id,
+                     @RequestHeader("Authorization") String token) {
+              return imagemService.obterImagemId(id, token);
        }
 
-       @CrossOrigin
-       @DeleteMapping("/{id}")
-       public ResponseEntity<String> deleteImagemByid(@PathVariable("id") Long id) {
-              return imagemServices.deleteImagemByid(id);
-              
+       @DeleteMapping("admin/imagem//{id}")
+       public ResponseEntity<String> deleteImagemByid(@PathVariable("id") Long id,
+                     @RequestHeader("Authorization") String token) {
+              return imagemService.deleteImagemByid(id, token);
+
        }
 
-       @CrossOrigin
-       @PutMapping
-       public ResponseEntity<String> updateImagem(@RequestBody ImagemDTO imagemDTO) {
-              return imagemServices.updateImagem(imagemDTO);
+       @PutMapping("admin/imagem")
+       public ResponseEntity<String> updateImagem(@RequestBody ImagemDTO imagemDTO,
+                     @RequestHeader("Authorization") String token) {
+              return imagemService.updateImagem(imagemDTO, token);
        }
 
 }

@@ -4,65 +4,58 @@ import java.util.List;
 
 import com.luan.app.DTOs.ProdutoDTO;
 import com.luan.app.DTOs.ProdutoForm;
-import com.luan.app.services.ProdutoServices;
+import com.luan.app.services.ProdutoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/produto")
+@RequestMapping("/api/")
 public class ProdutoController {
 
        @Autowired
-       private ProdutoServices produtoServices;
+       private ProdutoService produtoService;
 
-       @CrossOrigin
-       @PostMapping
-       public ResponseEntity<String> createProduto(@RequestBody ProdutoDTO produtoDTO) {
-
-              return produtoServices.createProduto(produtoDTO);
+       @PostMapping(value = "admin/produto")
+       public ResponseEntity<String> createProduto(@RequestBody ProdutoDTO produtoDTO ,@RequestHeader("Authorization") String token) {
+              return produtoService.createProduto(produtoDTO,token);
        }
 
-       @CrossOrigin
-       @PutMapping()
-       public ResponseEntity<String> updateProduto(@RequestBody ProdutoDTO produtoDTO) {
+       @PutMapping(value = "admin/produto")
+       public ResponseEntity<String> updateProduto(@RequestBody ProdutoDTO produtoDTO, @RequestHeader("Authorization") String token) {
 
-              return produtoServices.update(produtoDTO);
+              return produtoService.update(produtoDTO,token);
        }
 
-       @CrossOrigin
-       @GetMapping()
-       public ResponseEntity<List<ProdutoDTO>> obterProdutos() {
+       @GetMapping(value = "user/produto")
+       public ResponseEntity<List<ProdutoDTO>> obterProdutos( @RequestHeader("Authorization") String token) {
 
-              return produtoServices.obterProdutos();
+              return produtoService.obterProdutos(token);
        }
 
-       @CrossOrigin
-       @GetMapping("/{id}")
-       public ResponseEntity<ProdutoDTO> obterProdutoId(@PathVariable("id") Long id) {
-              return produtoServices.obterProdutoId(id);
+       @GetMapping("user/produto/{id}")
+       public ResponseEntity obterProdutoId(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
+              return produtoService.obterProdutoId(id, token);
        }
 
-       @CrossOrigin
-       @DeleteMapping("/{id}")
-       public ResponseEntity<String> deleteProdutoById(@PathVariable("id") Long id) {
+       @DeleteMapping("admin/produto/{id}")
+       public ResponseEntity<String> deleteProdutoById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token) {
 
-              return produtoServices.deleteProdutoById(id);
+              return produtoService.deleteProdutoById(id,token);
        }
 
-       @CrossOrigin
-       @GetMapping("/id_nome")
-       public ResponseEntity<List<ProdutoForm>> obterIdENomeProdutos() {
-              return produtoServices.obterIdENomeProdutos();
+       @GetMapping("user/produto/id_nome")
+       public ResponseEntity<List<ProdutoForm>> obterIdENomeProdutos( @RequestHeader("Authorization") String token) {
+              return produtoService.obterIdENomeProdutos(token);
 
        }
 

@@ -16,13 +16,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProdutoServices {
+public class ProdutoService {
 
        @Autowired
        private ProdutoRepositorio produtoRepositorio;
 
-       public ResponseEntity<String> createProduto(ProdutoDTO produtoDTO) {
+       @Autowired
+       private DeniedLTokenService deniedLTokenService;
+
+       public ResponseEntity<String> createProduto(ProdutoDTO produtoDTO, String token) {
               try {
+                     if (deniedLTokenService.existToken(token)) {
+                            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                     }
                      Produto produto = DTOparaEntidades.ProdutoDTOparaProduto(produtoDTO);
                      produtoRepositorio.save(produto);
                      return new ResponseEntity<>("Produto cadastrado", HttpStatus.OK);
@@ -32,21 +38,30 @@ public class ProdutoServices {
 
        }
 
-       public ResponseEntity<List<ProdutoDTO>> obterProdutos() {
+       public ResponseEntity<List<ProdutoDTO>> obterProdutos(String token) {
+              if (deniedLTokenService.existToken(token)) {
+                     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+              }
               return ResponseEntity.ok(produtoRepositorio.findAll().stream().map(x -> new ProdutoDTO(x))
                             .collect(Collectors.toList()));
 
        }
 
-       public ResponseEntity<ProdutoDTO> obterProdutoId(Long id) {
+       public ResponseEntity obterProdutoId(Long id, String token) {
+              if (deniedLTokenService.existToken(token)) {
+                     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+              }
               return ResponseEntity.ok(new ProdutoDTO(produtoRepositorio.findById(id)
                             .orElseThrow(() -> new NoSuchElementException("Produto não encontado"))));
 
        }
 
-       public ResponseEntity<String> deleteProdutoById(Long id) {
+       public ResponseEntity<String> deleteProdutoById(Long id, String token) {
               try {
-                     if(!produtoRepositorio.findById(id).isPresent()){
+                     if (deniedLTokenService.existToken(token)) {
+                            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                     }
+                     if (!produtoRepositorio.findById(id).isPresent()) {
                             return new ResponseEntity<String>("Produto não encotrado", HttpStatus.NOT_FOUND);
                      }
                      produtoRepositorio.deleteById(id);
@@ -57,9 +72,12 @@ public class ProdutoServices {
               }
        }
 
-       public ResponseEntity<String> update(ProdutoDTO produtoDTO) {
+       public ResponseEntity<String> update(ProdutoDTO produtoDTO, String token) {
 
               try {
+                     if (deniedLTokenService.existToken(token)) {
+                            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                     }
                      Produto produto = DTOparaEntidades.ProdutoDTOparaProduto(produtoDTO);
                      produto.setId(produtoDTO.getId());
                      produtoRepositorio.save(produto);
@@ -70,10 +88,11 @@ public class ProdutoServices {
 
        }
 
-       public ResponseEntity<List<ProdutoForm>> obterIdENomeProdutos(){
-
-              return  ResponseEntity.ok(produtoRepositorio.findAll().stream().map(
-                     x -> new ProdutoForm(x.getId(),x.getNome())
-              ).collect(Collectors.toList()));
+       public ResponseEntity<List<ProdutoForm>> obterIdENomeProdutos(String token) {
+              if (deniedLTokenService.existToken(token)) {
+                     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+              }
+              return ResponseEntity.ok(produtoRepositorio.findAll().stream().map(
+                            x -> new ProdutoForm(x.getId(), x.getNome())).collect(Collectors.toList()));
        }
 }
