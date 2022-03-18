@@ -52,7 +52,7 @@ Enfim, finalizado o update no fronte end de produtos e imagens.
 
 Adicionei a função de deletar uma imagem diretamente do app. Também deletará quando for atualizar uma nova imagem para o objeto imagem.
 
-Autenticação e autorização com Keycloak no Spring Boot [![](https://img.shields.io/badge/-Keycloak--SpringBoot-green)](https://github.com/LuanChagas/treinando_forms_spring_react/commit/4699dd8aeacc18be95554eccf70f859a6811dc4b?diff=split)
+## Autenticação e autorização com Keycloak no Spring Boot [![](https://img.shields.io/badge/-Keycloak--SpringBoot-green)](https://github.com/LuanChagas/treinando_forms_spring_react/commit/4699dd8aeacc18be95554eccf70f859a6811dc4b?diff=split)
 
 Quando comecei esse estudo, não passava pela cabeça em adicionar alguma configuração de autenticação e autorização.
 
